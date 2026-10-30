@@ -1,5 +1,7 @@
 import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ContentProvider } from "@/lib/useContent";
+import { ModalProvider } from "@/components/ModalProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingCta from "@/components/FloatingCta";
@@ -27,24 +29,25 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://batobaj.tech"),
-  title: "BatoBuzz Software — Full-stack software studio in Nepal",
+  metadataBase: new URL("https://batobuzz.com.np"),
+  title: "BatoBuzz Technology - Software, Web, Mobile & IT Solutions in Nepal",
   description:
-    "BatoBuzz Software (Batobaj Technology) is a full-stack development studio in Tulsipur, Nepal. We build production mobile apps, web apps, and the backends behind them — Flutter, .NET, Firebase, Next.js.",
+    "BatoBuzz Technology is a full-stack product studio in Inaruwa, Nepal. We build mobile and web apps, software, backends, networking and complete IT solutions, from idea to launch.",
   keywords: [
-    "software studio Nepal",
+    "software company Nepal",
+    "IT solutions Nepal",
+    "app development Nepal",
+    "web development Nepal",
+    "digital marketing Nepal",
     "Flutter developer",
-    ".NET backend",
-    "Next.js",
-    "app development",
-    "Batobaj Technology",
+    "BatoBuzz Technology",
     "BatoBuzz",
   ],
-  authors: [{ name: "Batobaj Technology" }],
+  authors: [{ name: "BatoBuzz Technology" }],
   openGraph: {
-    title: "BatoBuzz Software — Full-stack software studio in Nepal",
+    title: "BatoBuzz Technology - Software, Web, Mobile & IT Solutions",
     description:
-      "We build production apps end to end — mobile, web, and the backends behind them.",
+      "A full-stack product studio in Nepal. We design and ship software, apps and complete IT solutions for businesses.",
     type: "website",
     locale: "en_US",
   },
@@ -66,12 +69,16 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${display.variable} ${body.variable} ${mono.variable}`}>
-        <Header />
-        {children}
-        <Footer />
-        <FloatingCta />
-        <ScrollFX />
+      <body className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+        <ContentProvider>
+          <ModalProvider>
+            <Header />
+            {children}
+            <Footer />
+            <FloatingCta />
+            <ScrollFX />
+          </ModalProvider>
+        </ContentProvider>
       </body>
     </html>
   );

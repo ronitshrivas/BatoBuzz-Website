@@ -5,6 +5,7 @@ const nextConfig = {
   // next/image optimization requires a server; disable for static export.
   images: { unoptimized: true },
   reactStrictMode: true,
+  devIndicators: false,
 };
 
 export default nextConfig;

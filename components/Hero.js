@@ -1,56 +1,69 @@
-import Icon from "./Icon";
-import Wave from "./Wave";
+"use client";
 
-const TRUST = [
-  { icon: "layers", text: "9+ apps shipped" },
-  { icon: "pin", text: "Nepal & abroad" },
-  { icon: "check", text: "Full-stack, in-house" },
-];
+import Icon from "./Icon";
+import { useContent } from "@/lib/useContent";
+import { useModal } from "./ModalProvider";
 
 export default function Hero() {
+  const hero = useContent("hero");
+  const { openSchedule } = useModal();
+
   return (
-    <section className="section-ink hero2 has-wave" id="top">
+    <section className="hero2 section-ink" aria-labelledby="hero-title">
       <div className="hero2-bg" />
-      <div className="glow" />
-      <div className="wrap above hero2-inner">
-        <span className="eyebrow eyebrow-center">
-          <Icon name="spark" style={{ width: 13, height: 13 }} />
-          Full-stack software studio · Nepal
-        </span>
-        <h1>
-          We build <span className="accent">production apps</span> end to end —
-          mobile, web, and the backends behind them.
-        </h1>
-        <p className="hero2-lead">
-          BatoBuzz Software is a full-stack development studio in Tulsipur,
-          Nepal. From the first prototype to a deployed app your users rely on,
-          we design, build, and maintain the whole thing — frontend, backend,
-          and infrastructure.
-        </p>
-        <div className="hero2-cta">
-          <a className="btn btn-primary" href="#contact">
-            Discuss your project
-            <Icon name="arrow" />
-          </a>
-          <a className="btn btn-ghost" href="#products">
-            See our products
-          </a>
-        </div>
-        <div className="hero2-trust">
-          {TRUST.map((t) => (
-            <span className="item" key={t.text}>
-              <Icon name={t.icon} />
-              {t.text}
+      <div className="wrap hero2-inner">
+        <div className="hero-badges">
+          {hero.badges?.map((b, i) => (
+            <span className="hero-badge" key={i}>
+              <span className="dot" />
+              {b}
             </span>
           ))}
         </div>
+
+        <h1 id="hero-title">{hero.title}</h1>
+        <p className="hero2-lead">{hero.lead}</p>
+
+        <div className="hero2-cta">
+          <button className="btn btn-primary" onClick={openSchedule}>
+            {hero.primaryCta?.label || "Start a project"}
+            <Icon name="arrow" />
+          </button>
+          <a className="btn btn-ghost" href={hero.secondaryCta?.href || "#projects"}>
+            {hero.secondaryCta?.label || "View our work"}
+          </a>
+        </div>
+
+        <div className="hero-chips">
+          {hero.chips?.map((c, i) => (
+            <span className="hero-chip" key={i}>
+              {c.logo ? (
+                <img src={c.logo} alt="" width="18" height="18" loading="lazy" />
+              ) : null}
+              {c.name}
+            </span>
+          ))}
+        </div>
+
+        <div className="hero-flow" aria-hidden="true">
+          <span className="flow-node">Idea</span>
+          <span className="flow-arrow"><Icon name="arrow" /></span>
+          <span className="flow-node">Architecture</span>
+          <span className="flow-arrow"><Icon name="arrow" /></span>
+          <span className="flow-node">Build</span>
+          <span className="flow-arrow"><Icon name="arrow" /></span>
+          <span className="flow-node accent-node">Launch</span>
+        </div>
       </div>
-      <a className="scroll-ind" href="#work" aria-label="Scroll to content">
-        <span className="mouse">
-          <span className="wheel" />
-        </span>
-      </a>
-      <Wave to="surface" />
+
+      <div className="wave">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
+          <path
+            className="fill-bg"
+            d="M0,40 C240,80 480,0 720,24 C960,48 1200,80 1440,36 L1440,72 L0,72 Z"
+          />
+        </svg>
+      </div>
     </section>
   );
 }

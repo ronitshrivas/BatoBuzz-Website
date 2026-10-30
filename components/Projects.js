@@ -1,43 +1,55 @@
-import Wave from "./Wave";
+"use client";
 
-const PROJECTS = [
-  { num: "01", name: "Secure Officer Vault", sector: "Defence", stack: ".NET 7 · PostgreSQL · Flutter" },
-  { num: "02", name: "Grow With Roja", sector: "Coaching", stack: "Next.js 14 · Firebase" },
-  { num: "03", name: "OrderBoard", sector: "Trading", stack: "Flutter · Real-time" },
-  { num: "04", name: "AdvertTech", sector: "Nigeria", stack: "Flutter · Node.js" },
-  { num: "05", name: "Becky Pinder Yoga", sector: "Web", stack: "Next.js · Vercel" },
-];
+import Icon from "./Icon";
+import Carousel from "./Carousel";
+import { useContent } from "@/lib/useContent";
+
+function Card({ it }) {
+  const inner = (
+    <>
+      <div className="pc-top">
+        <span className="badge badge-sector">{it.category}</span>
+        {it.url ? <span className="pc-link"><Icon name="external" /></span> : null}
+      </div>
+      {it.image ? (
+        <div className="pc-logo"><img src={it.image} alt={it.name} loading="lazy" /></div>
+      ) : null}
+      <h3 className="card-title pc-name">{it.name}</h3>
+      <div className="role">{it.role}</div>
+      <p className="card-text">{it.description}</p>
+      {it.outcome ? (
+        <div className="pc-outcome"><span className="cb-label">Outcome</span><p className="cb-text">{it.outcome}</p></div>
+      ) : null}
+      {it.tags?.length ? (
+        <div className="chip-row">{it.tags.slice(0, 4).map((t, j) => <span className="chip" key={j}>{t}</span>)}</div>
+      ) : null}
+    </>
+  );
+  return it.url ? (
+    <a className="scroll-card linkable" href={it.url} target="_blank" rel="noopener noreferrer">{inner}</a>
+  ) : (
+    <article className="scroll-card">{inner}</article>
+  );
+}
 
 export default function Projects() {
+  const p = useContent("projects");
   return (
-    <section className="section-ink section has-wave" aria-labelledby="projects-title">
-      <div className="wrap">
-        <div className="section-head">
-          <span className="eyebrow">Selected work</span>
-          <h2 className="section-title" id="projects-title">
-            Projects we&apos;ve delivered
-          </h2>
-          <p className="lead">
-            A sample across sectors and stacks — client platforms and products
-            we have taken to real users.
-          </p>
-        </div>
-        <div>
-          {PROJECTS.map((p) => (
-            <div className="project-row" key={p.num}>
-              <span className="pr-num">{p.num}</span>
-              <div className="pr-main">
-                <div className="pr-name">{p.name}</div>
-                <div className="pr-stack">{p.stack}</div>
-              </div>
-              <div className="pr-right">
-                <span className="badge badge-sector">{p.sector}</span>
-              </div>
-            </div>
-          ))}
+    <section className="section section-ink has-wave sec-carousel" id="projects" aria-labelledby="projects-title">
+      <div className="glow" />
+      <div className="wrap above">
+        <div className="section-head center">
+          <span className="eyebrow eyebrow-center"><Icon name="rocket" /> {p.eyebrow}</span>
+          <h2 className="section-title" id="projects-title">{p.title}</h2>
+          <p className="lead">{p.lead}</p>
         </div>
       </div>
-      <Wave to="bg" />
+      <Carousel items={p.items} renderItem={(it, i) => <Card it={it} key={i} />} />
+      <div className="wave">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
+          <path className="fill-bg" d="M0,40 C240,72 480,8 720,28 C960,48 1200,72 1440,38 L1440,72 L0,72 Z" />
+        </svg>
+      </div>
     </section>
   );
 }
