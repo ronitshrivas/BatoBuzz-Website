@@ -1,5 +1,60 @@
 "use client";
+"use client";
 
+import { useRef, useState } from "react";
+import { uploadImage } from "@/lib/store";
+
+
+export function ImageField({ label, value, onChange, hint }) {
+  const [mode, setMode] = useState("url");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const fileRef = useRef(null);
+
+  async function handleFile(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBusy(true);
+    setError("");
+    try {
+      onChange(await uploadImage(file));
+    } catch (err) {
+      setError(err?.message || String(err));
+    } finally {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
+  return (
+    <div className="fld">
+      <span className="fld-label">{label}</span>
+      <div style={{ display: "flex", gap: 8, marginBottom: 6 }}>
+        <button type="button" className="mini-btn"
+          style={mode === "url" ? { outline: "2px solid var(--accent)" } : undefined}
+          onClick={() => setMode("url")}>From URL</button>
+        <button type="button" className="mini-btn"
+          style={mode === "device" ? { outline: "2px solid var(--accent)" } : undefined}
+          onClick={() => setMode("device")}>From device</button>
+      </div>
+      {mode === "url" ? (
+        <input type="text" value={value ?? ""} placeholder="https://..." onChange={(e) => onChange(e.target.value)} />
+      ) : (
+        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} disabled={busy} />
+      )}
+      {busy ? <span className="fld-hint">Uploading...</span> : null}
+      {error ? <span className="fld-hint danger-text">{error}</span> : null}
+      {value ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 6 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={value} alt="" style={{ height: 48, maxWidth: 120, objectFit: "contain", borderRadius: 6 }} />
+          <button type="button" className="mini-btn danger" onClick={() => onChange("")}>remove</button>
+        </div>
+      ) : null}
+      {hint ? <span className="fld-hint">{hint}</span> : null}
+    </div>
+  );
+}
 // Small reusable form primitives for the admin editor.
 
 export function TextField({ label, value, onChange, placeholder, hint }) {
@@ -146,6 +201,8 @@ export function ListEditor({ label, items, schema, onChange, blank }) {
                 return <Toggle key={f.key} label={f.label} value={v} onChange={(x) => update(i, f.key, x)} />;
               if (f.type === "tags")
                 return <TagField key={f.key} label={f.label} value={v} onChange={(x) => update(i, f.key, x)} />;
+              if (f.type === "image")
+  return <ImageField key={f.key} label={f.label} value={v} onChange={(x) => update(i, f.key, x)} />;
               if (f.type === "number")
                 return <NumberField key={f.key} label={f.label} value={v} onChange={(x) => update(i, f.key, x)} />;
               return <TextField key={f.key} label={f.label} value={v} placeholder={f.placeholder} onChange={(x) => update(i, f.key, x)} />;

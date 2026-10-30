@@ -232,7 +232,8 @@ function Editor({ tab, content, up, upField, setContent }) {
           blank={{ name: "", logo: "" }}
           schema={[
             { key: "name", label: "Name" },
-            { key: "logo", label: "Logo URL" },
+            // { key: "logo", label: "Logo URL" },
+            { key: "logo", label: "Logo URL", type: "image" }
           ]}
           onChange={(v) => upField("hero", "chips", v)}
         />
@@ -392,7 +393,8 @@ function Editor({ tab, content, up, upField, setContent }) {
             { key: "bio", label: "Description", type: "textarea" },
             { key: "tags", label: "Skills / tags", type: "tags" },
             { key: "linkedin", label: "LinkedIn URL" },
-            { key: "photo", label: "Photo URL (optional)" },
+            // { key: "photo", label: "Photo URL (optional)" },
+            { key: "photo", label: "Photo URL (optional)", type: "image" },
           ]}
           onChange={(v) => upField("team", "members", v)}
         />
@@ -413,7 +415,8 @@ function Editor({ tab, content, up, upField, setContent }) {
           blank={{ caption: "", image: "" }}
           schema={[
             { key: "caption", label: "Caption" },
-            { key: "image", label: "Image URL" },
+            // { key: "image", label: "Image URL" },
+            { key: "image", label: "Image URL", type: "image" },
           ]}
           onChange={(v) => upField("gallery", "items", v)}
         />
@@ -502,7 +505,8 @@ function Editor({ tab, content, up, upField, setContent }) {
             { key: "title", label: "Title" },
             { key: "story", label: "Story", type: "textarea" },
             { key: "result", label: "Result", type: "textarea" },
-            { key: "image", label: "Logo / image URL (optional)" },
+            // { key: "image", label: "Logo / image URL (optional)" },
+            { key: "image", label: "Logo / image URL (optional)", type: "image" },
             { key: "url", label: "Link URL (opens when clicked)" },
           ]}
           onChange={(v) => upField("successStories", "items", v)}
@@ -551,7 +555,8 @@ function Editor({ tab, content, up, upField, setContent }) {
             { key: "quote", label: "Quote", type: "textarea" },
             { key: "author", label: "Author name" },
             { key: "role", label: "Role / company" },
-            { key: "photo", label: "Photo URL (optional)" },
+            // { key: "photo", label: "Photo URL (optional)" },
+            	{ key: "photo", label: "Photo URL (optional)", type: "image" },
           ]}
           onChange={(v) => upField("testimonials", "items", v)}
         />
